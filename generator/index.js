@@ -17,7 +17,7 @@ module.exports = (api, config) => {
 
   api.postProcessFiles(files => {
     const sourceFiles = /^src\//
-    const immutableFiles = ['src/components/HelloWord.vue', 'src/index.js']
+    const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
 
     for (const file in files) {
       if (!sourceFiles.test(file) || immutableFiles.indexOf(file) !== -1) {
