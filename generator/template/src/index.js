@@ -1,5 +1,5 @@
-import component from './components/HelloWorld.vue';
+import <%= options.componentName %> from './components/<%= options.componentName %>.vue';
 
 export {
-    component
+    <%= options.componentName %>
 }

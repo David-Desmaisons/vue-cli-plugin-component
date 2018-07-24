@@ -1,35 +1,37 @@
-module.exports = (api, config) => {
+module.exports = (api, { componentName }) => {
 
   api.extendPackage({
-    scripts: {
-      serve: "vue-cli-service serve ./example/main.js --open",
-      build: "vue-cli-service build --target lib",
-    },
-    private: false,
+    name: componentName,
+    main: `dist/${componentName}.umd.js`,
+    module: `dist/${componentName}.common.min.js`,
     files: [
       "dist/*.css",
       "dist/*.map",
       "dist/*.js",
+      `src/*`
+    ],
+    scripts: {
+      serve: "vue-cli-service serve ./example/main.js --open",
+      build: `vue-cli-service build --name ${componentName} --entry ./src/index.js --target lib --modern`,
+    },
+    private: false,
+    keywords: [
+      "vue",
+      "component"
     ]
   })
 
   api.render('./template')
 
   api.postProcessFiles(files => {
-    const sourceFiles = /^src\//
-    const rootFile = 'src/index.js'
-    const immutableFiles = ['src/components/HelloWorld.vue', rootFile]
-
-    for (const file in files) {
-      if (!sourceFiles.test(file) || immutableFiles.indexOf(file) !== -1) {
-        continue;
-      }
-      const migratedFile = file.replace(sourceFiles, 'example/');
-      files[migratedFile] = files[file];
-      delete files[file];
+    const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest')
+    const { renameFiles, updateFile } = require('./fileHelper')
+    if (hasTest) {
+      updateFile(files, 'tests/unit/HelloWorld.spec.js', content =>  content.replace(/HelloWorld/g, componentName))
     }
 
-    files['src/main.js'] = files[rootFile]
-    delete files[rootFile];
+    const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
+    renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
+    renameFiles(files, /\/HelloWorld\./, `/${componentName}.`)
   })
 }
