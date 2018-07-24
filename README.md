@@ -2,17 +2,38 @@
 
 > component plugin for vue-cli
 
+```
+project
+│   README.md  
+└───src
+│   ├── index.js
+│   └───components
+│       └───Mycomponent.vue
+│   
+└───example
+    ├── App.vue
+    ├── main.js
+```
+Split application entry point:
+
+Use build to build the component
+``` sh
+nom run build
+```
+
+Use serve to serve the application example in the example folder
+``` sh
+nom run build
+```
+
 ## Configuration
 
-No configuration.
+Component Name: the name of the component.
 
 ## Injected Commands
 
 No command will be injected.
 
-## Parallelization
-
-[thread-loader](https://github.com/webpack-contrib/thread-loader) is enabled by default when the machine has more than 1 CPU cores. This can be turned off by setting `parallel: false` in `vue.config.js`.
 
 ## Installing in an Already Created Project
 
