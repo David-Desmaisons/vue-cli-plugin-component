@@ -1,5 +1,6 @@
 # vue-cli-component
-
+[![Npm version](https://img.shields.io/npm/v/vue-cli-plugin-component.svg?maxAge=2592000)](https://www.npmjs.com/package/vue-cli-plugin-component)
+[![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-cli-plugin-component.svg)](https://github.com/David-Desmaisons/vue-cli-plugin-component/blob/master/LICENSE)
 > component plugin for vue-cli
 
 ```
