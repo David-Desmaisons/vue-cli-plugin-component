@@ -3,6 +3,8 @@
 [![MIT License](https://img.shields.io/github/license/David-Desmaisons/vue-cli-plugin-component.svg)](https://github.com/David-Desmaisons/vue-cli-plugin-component/blob/master/LICENSE)
 > component plugin for vue-cli
 
+![demo](./__doc__/vue-ui.png)
+
 ```
 project
 │   README.md  
