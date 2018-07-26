@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-component",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "vue-cli 3 plugin to create shareable component",
   "main": "index.js",
   "repository": {
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@types/node": "^10.5.2",
-    "@vue/cli-shared-utils": "^3.0.0-rc.5",
+    "@vue/cli-shared-utils": "^3.0.0-rc.5"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",

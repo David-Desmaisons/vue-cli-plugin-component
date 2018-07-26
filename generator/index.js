@@ -1,4 +1,4 @@
-module.exports = (api, { componentName }) => {
+module.exports = (api, { componentName, useVueStyleguidist }) => {
 
   api.extendPackage({
     name: componentName,
@@ -20,6 +20,18 @@ module.exports = (api, { componentName }) => {
       "component"
     ]
   })
+
+  if (useVueStyleguidist) {
+    api.extendPackage({
+      scripts: {
+        styleguide: "vue-styleguidist server", 
+        'styleguide:build': "vue-styleguidist build"
+      },
+      devDependencies: {
+        'vue-styleguidist': "^1.7.13",
+      }
+    })
+  }
 
   api.render('./template')
 
