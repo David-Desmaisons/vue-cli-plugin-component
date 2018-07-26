@@ -31,9 +31,9 @@ nom run build
 
 ## Configuration
 
-*ComponentName*: the name of the component.
+**componentName:** the name of the component.
 
-*useVueStyleguidist*: true to install [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) 
+**useVueStyleguidist:** true to install [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) 
 
 ## Injected Commands
 
