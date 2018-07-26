@@ -25,7 +25,6 @@
   "dependencies": {
     "@types/node": "^10.5.2",
     "@vue/cli-shared-utils": "^3.0.0-rc.5",
-    "globby": "^8.0.1"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",
