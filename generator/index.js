@@ -1,5 +1,4 @@
-module.exports = (api, { componentName, useVueStyleguidist }) => {
-
+module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
   api.extendPackage({
     name: componentName,
     main: `dist/${componentName}.umd.js`,
@@ -24,11 +23,22 @@ module.exports = (api, { componentName, useVueStyleguidist }) => {
   if (useVueStyleguidist) {
     api.extendPackage({
       scripts: {
-        styleguide: "vue-styleguidist server", 
+        styleguide: "vue-styleguidist server",
         'styleguide:build': "vue-styleguidist build"
       },
       devDependencies: {
         'vue-styleguidist': "^1.7.13",
+      }
+    })
+  }
+
+  if (useVueDoc) {
+    api.extendPackage({
+      scripts: {
+        'doc:build': `npx vuedoc.md --section API --output ./README.md ./src/components/${componentName}.vue`
+      },
+      devDependencies: {
+        '@vuedoc/md': "^1.3.3"
       }
     })
   }
@@ -39,8 +49,23 @@ module.exports = (api, { componentName, useVueStyleguidist }) => {
     const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest')
     const { renameFiles, updateFile } = require('./fileHelper')
     if (hasTest) {
-      updateFile(files, 'tests/unit/HelloWorld.spec.js', content =>  content.replace(/HelloWorld/g, componentName))
+      updateFile(files, 'tests/unit/HelloWorld.spec.js', content => content.replace(/HelloWorld/g, componentName))
     }
+
+    var updateInReadMe = `# $1
+
+  \`\`\`vue
+    <${componentName} :text="hello"></${componentName}>
+  \`\`\`
+
+`;
+
+    if (useVueDoc){
+      updateInReadMe += `## API
+
+`;
+    }
+    updateFile(files, 'README.md', content => content.replace(/^# (.+)$/m, updateInReadMe))
 
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)

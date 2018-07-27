@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-component",
-  "version": "1.1.2",
+  "version": "1.2.4",
   "description": "vue-cli 3 plugin to create shareable component",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/David-Desmaisons/vue-cli-plugin-component/issues"
   },
-  "homepage": "https://github.com/David-Desmaisons/vue-cli-plugin-component/README.md",
+  "homepage": "https://github.com/David-Desmaisons/vue-cli-plugin-component/blob/master/README.md",
   "publishConfig": {
     "access": "public"
   },
