@@ -31,9 +31,15 @@ nom run build
 
 ## Configuration
 
+![configuration](./__doc__/configuration.png)
+
+
 **componentName:** the name of the component.
 
 **useVueStyleguidist:** true to install [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) 
+
+**useVueDoc:** true to install [vuedoc.md](https://gitlab.com/vuedoc/md) 
+
 
 ## Injected Commands
 
