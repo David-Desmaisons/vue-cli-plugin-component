@@ -1,3 +1,5 @@
+const { hasProjectYarn } = require('@vue/cli-shared-utils')
+
 function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   let script = useLint ? 'npm run lint && ' : ''
   script += 'npm run build '
@@ -31,6 +33,7 @@ function updateReadMe(content, { componentName, useVueDoc }) {
 module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
 
   const useLint = api.hasPlugin('eslint')
+  const hasYarn = hasProjectYarn(process.cwd())
   const context = { componentName, useVueStyleguidist, useVueDoc, useLint }
 
   api.extendPackage({
