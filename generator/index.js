@@ -10,9 +10,28 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   return script.trim()
 }
 
+
+function updateReadMe(content, { componentName, useVueDoc }) {
+  var updateInReadMe = `# $1
+
+  \`\`\`vue
+    <${componentName} :text="hello"></${componentName}>
+  \`\`\`
+
+`
+  if (useVueDoc) {
+    updateInReadMe += `## API
+
+`
+  }
+  let updatedContext = content.replace(/^# (.+)$/m, updateInReadMe)
+  return updatedContext
+}
+
 module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
 
   const useLint = api.hasPlugin('eslint')
+  const context = { componentName, useVueStyleguidist, useVueDoc, useLint }
 
   api.extendPackage({
     name: componentName,
@@ -27,7 +46,7 @@ module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
     scripts: {
       serve: "vue-cli-service serve ./example/main.js --open",
       build: `vue-cli-service build --name ${componentName} --entry ./src/index.js --target lib --modern`,
-      prepublishOnly: buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint })
+      prepublishOnly: buildPrePublishOnly(context)
     },
     private: false,
     keywords: [
@@ -68,20 +87,7 @@ module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
       updateFile(files, 'tests/unit/HelloWorld.spec.js', content => content.replace(/HelloWorld/g, componentName))
     }
 
-    var updateInReadMe = `# $1
-
-  \`\`\`vue
-    <${componentName} :text="hello"></${componentName}>
-  \`\`\`
-
-`;
-
-    if (useVueDoc) {
-      updateInReadMe += `## API
-
-`;
-    }
-    updateFile(files, 'README.md', content => content.replace(/^# (.+)$/m, updateInReadMe))
+    updateFile(files, 'README.md', content => updateReadMe(content, context))
 
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
