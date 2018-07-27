@@ -17,7 +17,12 @@ project
     ├── App.vue
     ├── main.js
 ```
-Split application entry point:
+
+## Features
+
+* Ajust build script to only build the component. Use serve script to serve a demo page.
+
+* Automatically document the component with [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) and [vuedoc.md](https://gitlab.com/vuedoc/md) .
 
 Use build to build the component
 ``` sh
