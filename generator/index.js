@@ -1,4 +1,19 @@
+function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
+  let script = useLint ? 'npm run lint && ' : ''
+  script += 'npm run build '
+  if (useVueStyleguidist) {
+    script += '&& npm run styleguide:build '
+  }
+  if (useVueDoc) {
+    script += '&& npm run doc:build'
+  }
+  return script.trim()
+}
+
 module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
+
+  const useLint = api.hasPlugin('eslint')
+
   api.extendPackage({
     name: componentName,
     main: `dist/${componentName}.umd.js`,
@@ -12,6 +27,7 @@ module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
     scripts: {
       serve: "vue-cli-service serve ./example/main.js --open",
       build: `vue-cli-service build --name ${componentName} --entry ./src/index.js --target lib --modern`,
+      prepublishOnly: buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint })
     },
     private: false,
     keywords: [
@@ -60,7 +76,7 @@ module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
 
 `;
 
-    if (useVueDoc){
+    if (useVueDoc) {
       updateInReadMe += `## API
 
 `;
