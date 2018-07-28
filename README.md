@@ -33,12 +33,12 @@ nom run build
 
 Use serve to serve the application example in the example folder
 ``` sh
-nom run build
+nom run serve
 ```
 
 ### When using vue.doc
 
-Use doc:build to pdate the API section of README.md with generated documentation
+Use doc:build to update the API section of README.md with generated documentation
 ```
 npm run doc:build
 ```
@@ -50,7 +50,7 @@ Use styleguide to run style guide dev server
 npm run styleguide
 ```
 
-Use styleguide:build to Generate a static HTML style guide
+Use styleguide:build to generate a static HTML style guide
 ```
 npm run styleguide:build
 ```
