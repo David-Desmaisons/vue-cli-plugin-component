@@ -12,8 +12,7 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   return script.trim()
 }
 
-
-function updateReadMe(content, { componentName, useVueDoc }) {
+function updateReadMe(content, { componentName, useVueDoc, useVueStyleguidist }) {
   var updateInReadMe = `# $1
 
   \`\`\`vue
@@ -27,13 +26,46 @@ function updateReadMe(content, { componentName, useVueDoc }) {
 `
   }
   let updatedContext = content.replace(/^# (.+)$/m, updateInReadMe)
+  updatedContext += updateScriptDescription({ useVueDoc, useVueStyleguidist })
   return updatedContext
+}
+
+const descriptions = {
+  useVueStyleguidist: {
+    styleguide: "Run style guide dev server",
+    'styleguide:build': "Generate a static HTML style guide"
+  },
+  useVueDoc: {
+    'doc:build': "Update the API section of README.md with generated documentation"
+  }
+}
+
+function updateScriptDescription(options) {
+  const hasYarn = hasProjectYarn(process.cwd())
+  const packageManager = hasYarn ? 'yarn' : 'npm'
+  let scriptDescription = ''
+
+  for (var option in options) {
+    if (!options[option]) {
+      continue;
+    }
+    let scripts = descriptions[option]
+    scriptDescription += Object.keys(scripts).map(key => {
+      return [
+        `\n### ${scripts[key]}`,
+        '```',
+        `${packageManager} run ${key}`,
+        '```',
+        ''
+      ].join('\n')
+    }).join('')
+  }
+  return scriptDescription
 }
 
 module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
 
   const useLint = api.hasPlugin('eslint')
-  const hasYarn = hasProjectYarn(process.cwd())
   const context = { componentName, useVueStyleguidist, useVueDoc, useLint }
 
   api.extendPackage({
