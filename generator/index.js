@@ -1,4 +1,5 @@
-const { hasProjectYarn } = require('@vue/cli-shared-utils')
+const { renameFiles, updateFile } = require('./fileHelper')
+const readmeUpdater = require('./readmeUpdater');
 
 function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   let script = useLint ? 'npm run lint && ' : ''
@@ -11,61 +12,7 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   }
   return script.trim()
 }
-
-function updateReadMe(content, { componentName, useVueDoc, useVueStyleguidist }) {
-  var updateInReadMe = `# $1
-
-\`\`\`HTML
-  <${componentName} :text="hello"></${componentName}>
-\`\`\`
-
-`
-  if (useVueDoc) {
-    updateInReadMe += `## API
-
-`
-  }
-  updateInReadMe += `## Installation
-\`\`\`
-  npm install $1
-\`\`\``
-  let updatedContext = content.replace(/^# (.+)$/m, updateInReadMe)
-  updatedContext += updateScriptDescription({ useVueDoc, useVueStyleguidist })
-  return updatedContext
-}
-
-const descriptions = {
-  useVueStyleguidist: {
-    styleguide: "Run style guide dev server",
-    'styleguide:build': "Generate a static HTML style guide"
-  },
-  useVueDoc: {
-    'doc:build': "Update the API section of README.md with generated documentation"
-  }
-}
-
-function updateScriptDescription(options) {
-  const hasYarn = hasProjectYarn(process.cwd())
-  const packageManager = hasYarn ? 'yarn' : 'npm'
-  let scriptDescription = ''
-
-  for (var option in options) {
-    if (!options[option]) {
-      continue;
-    }
-    let scripts = descriptions[option]
-    scriptDescription += Object.keys(scripts).map(key => {
-      return [
-        `\n### ${scripts[key]}`,
-        '```',
-        `${packageManager} run ${key}`,
-        '```',
-        ''
-      ].join('\n')
-    }).join('')
-  }
-  return scriptDescription
-}
+ 
 
 module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
 
@@ -121,12 +68,11 @@ module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
 
   api.postProcessFiles(files => {
     const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest')
-    const { renameFiles, updateFile } = require('./fileHelper')
     if (hasTest) {
       updateFile(files, 'tests/unit/HelloWorld.spec.js', content => content.replace(/HelloWorld/g, componentName))
     }
 
-    updateFile(files, 'README.md', content => updateReadMe(content, context))
+    updateFile(files, 'README.md', content => readmeUpdater(content, context))
 
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
