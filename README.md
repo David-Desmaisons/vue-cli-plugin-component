@@ -24,7 +24,7 @@ project
 
 * Automatically document the component with [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) and [vuedoc.md](https://gitlab.com/vuedoc/md) .
 
-* Create a prepublishOnly script to include the build(s) before publish the component
+* Create a prepublishOnly script to run the build(s) before publishing the component
 
 * Update README.md with component information
 
