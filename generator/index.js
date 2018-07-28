@@ -15,9 +15,9 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
 function updateReadMe(content, { componentName, useVueDoc, useVueStyleguidist }) {
   var updateInReadMe = `# $1
 
-  \`\`\`vue
-    <${componentName} :text="hello"></${componentName}>
-  \`\`\`
+\`\`\`HTML
+  <${componentName} :text="hello"></${componentName}>
+\`\`\`
 
 `
   if (useVueDoc) {
@@ -25,6 +25,10 @@ function updateReadMe(content, { componentName, useVueDoc, useVueStyleguidist })
 
 `
   }
+  updateInReadMe += `## Installation
+\`\`\`
+  npm install $1
+\`\`\``
   let updatedContext = content.replace(/^# (.+)$/m, updateInReadMe)
   updatedContext += updateScriptDescription({ useVueDoc, useVueStyleguidist })
   return updatedContext
