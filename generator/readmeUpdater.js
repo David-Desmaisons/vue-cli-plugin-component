@@ -33,14 +33,24 @@ function updateScriptDescription(options) {
     return scriptDescription
 }
 
-module.export = (content, { componentName, useVueDoc, useVueStyleguidist }) => {
+module.exports = (content, { componentName, useVueDoc, useVueStyleguidist }) => {
     const updateInReadMe = [
         '',
         '# $1',
+        '',
+        '## Usage',
         '```HTML',
         `<${componentName} :text="hello"></${componentName}>`,
         '```',
-        ''
+        '```javascript',
+        `import { ${componentName} } from '$1'`,
+        '',
+        'export default {',
+        '  components: {',
+        `    ${componentName}`,
+        '  }',
+        '}',
+        '```'
     ];
 
     if (useVueDoc) {
