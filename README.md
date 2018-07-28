@@ -24,6 +24,8 @@ project
 
 * Automatically document the component with [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) and [vuedoc.md](https://gitlab.com/vuedoc/md) .
 
+## Scripts
+
 Use build to build the component
 ``` sh
 nom run build
@@ -33,6 +35,27 @@ Use serve to serve the application example in the example folder
 ``` sh
 nom run build
 ```
+
+### When using vue.doc
+
+Use doc:build to pdate the API section of README.md with generated documentation
+```
+npm run doc:build
+```
+
+### When using vueStyleguide
+
+Use styleguide to run style guide dev server
+```
+npm run styleguide
+```
+
+Use styleguide:build to Generate a static HTML style guide
+```
+npm run styleguide:build
+```
+
+
 
 ## Configuration
 
