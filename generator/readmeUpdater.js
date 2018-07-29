@@ -1,4 +1,4 @@
-const { hasProjectYarn } = require('@vue/cli-shared-utils')
+const { hasProjectYarn, hasProjectGit  } = require('@vue/cli-shared-utils')
 
 const descriptions = {
     useVueStyleguidist: {
@@ -33,10 +33,27 @@ function updateScriptDescription(options) {
     return scriptDescription
 }
 
-module.exports = (content, { componentName, useVueDoc, useVueStyleguidist }) => {
+module.exports = (content, { componentName, useVueDoc, useVueStyleguidist, addBadges }) => {
+    const hasGit = hasProjectGit (process.cwd())
+
     const updateInReadMe = [
         '',
-        '# $1',
+        '# $1'
+    ]
+
+    if (addBadges) {
+        if (hasGit){
+            var userName = require('git-user-name')();
+            updateInReadMe.push(
+                `[![GitHub open issues](https://img.shields.io/github/issues/${userName}/$1.svg?maxAge=2592000)](https://github.com/${userName}/$1/issues)`
+            )    
+        }
+        updateInReadMe.push(
+            `[![Npm version](https://img.shields.io/npm/v/$1.svg?maxAge=2592000)](https://www.npmjs.com/package/$1)`,
+        );
+    }
+
+    updateInReadMe.push(
         '',
         '## Usage',
         '```HTML',
@@ -51,10 +68,13 @@ module.exports = (content, { componentName, useVueDoc, useVueStyleguidist }) => 
         '  }',
         '}',
         '```'
-    ];
+    );
 
     if (useVueDoc) {
-        updateInReadMe.push('## API','');
+        updateInReadMe.push(
+            '## API',
+            ''
+        );
     }
 
     updateInReadMe.push(

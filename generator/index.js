@@ -13,11 +13,10 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   return script.trim()
 }
  
-
-module.exports = (api, { componentName, useVueStyleguidist, useVueDoc }) => {
+module.exports = (api, { componentName, useVueStyleguidist, useVueDoc, addBadges }) => {
 
   const useLint = api.hasPlugin('eslint')
-  const context = { componentName, useVueStyleguidist, useVueDoc, useLint }
+  const context = { componentName, useVueStyleguidist, useVueDoc, addBadges, useLint }
 
   api.extendPackage({
     name: componentName,

@@ -15,5 +15,11 @@ module.exports = [
         name: 'useVueDoc',
         message: 'Use vuedoc.md to automatically generate README API section?',
         default: true
+    },
+    {
+        type: 'confirm',
+        name: 'addBadges',
+        message: 'Add project badges to README.md?',
+        default: true
     }
 ]
