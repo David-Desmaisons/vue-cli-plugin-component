@@ -3,15 +3,18 @@ const readmeUpdater = require('./readmeUpdater');
 const licenseList = require('spdx-license-list/full');
 
 function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
-  let script = useLint ? 'npm run lint && ' : ''
-  script += 'npm run build '
+  const scripts = []
+  if (useLint) {
+    scripts.push('lint')
+  }
+  scripts.push('build')
   if (useVueStyleguidist) {
-    script += '&& npm run styleguide:build '
+    scripts.push('styleguide:build')
   }
   if (useVueDoc) {
-    script += '&& npm run doc:build'
+    scripts.push('doc:build')
   }
-  return script.trim()
+  return scripts.map(script => `npm run ${script}`).join(' && ')
 }
 
 function replaceInLicense(licenseTextTemplate, sourceText, newText){
@@ -22,12 +25,12 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText){
 module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useVueDoc, useVueStyleguidist }) => {
 
   const useLint = api.hasPlugin('eslint')
-  const context = { addBadges, addLicense, componentName, licenseName, useLint, useVueDoc, useVueStyleguidist }
+  const packageName = api.generator.pkg.name
+  const context = { addBadges, addLicense, componentName, licenseName, packageName, useLint, useVueDoc, useVueStyleguidist }
 
   api.extendPackage({
-    name: componentName,
-    main: `dist/${componentName}.umd.js`,
-    module: `dist/${componentName}.common.min.js`,
+    main: `dist/${packageName}.umd.js`,
+    module: `dist/${packageName}.common.min.js`,
     files: [
       "dist/*.css",
       "dist/*.map",
@@ -36,7 +39,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
     ],
     scripts: {
       serve: "vue-cli-service serve ./example/main.js --open",
-      build: `vue-cli-service build --name ${componentName} --entry ./src/index.js --target lib --modern`,
+      build: `vue-cli-service build --name ${packageName} --entry ./src/index.js --target lib --modern`,
       prepublishOnly: buildPrePublishOnly(context)
     },
     private: false,
