@@ -39,7 +39,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
     ],
     scripts: {
       serve: "vue-cli-service serve ./example/main.js --open",
-      build: `vue-cli-service build --name ${packageName} --entry ./src/index.js --target lib --modern`,
+      build: `vue-cli-service build --name ${packageName} --entry ./src/index.js --target lib`,
       prepublishOnly: buildPrePublishOnly(context)
     },
     private: false,
