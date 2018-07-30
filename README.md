@@ -34,6 +34,8 @@ project
 
     * Create a license file for the project
 
+    * Add projects badges
+
 ## Scripts
 
 Use build to build the component
