@@ -1,5 +1,6 @@
 const { renameFiles, updateFile } = require('./fileHelper')
 const readmeUpdater = require('./readmeUpdater');
+const licenseList = require('spdx-license-list/full');
 
 function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   let script = useLint ? 'npm run lint && ' : ''
@@ -12,11 +13,16 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   }
   return script.trim()
 }
+
+function replaceInLicense(licenseTextTemplate, sourceText, newText){
+  return licenseTextTemplate.replace(new RegExp(`<${sourceText}>`), newText)
+                            .replace(new RegExp(`\\[${sourceText}\\]`), newText)
+}
  
-module.exports = (api, { componentName, useVueStyleguidist, useVueDoc, addBadges }) => {
+module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useVueDoc, useVueStyleguidist }) => {
 
   const useLint = api.hasPlugin('eslint')
-  const context = { componentName, useVueStyleguidist, useVueDoc, addBadges, useLint }
+  const context = { addBadges, addLicense, componentName, licenseName, useLint, useVueDoc, useVueStyleguidist }
 
   api.extendPackage({
     name: componentName,
@@ -76,5 +82,14 @@ module.exports = (api, { componentName, useVueStyleguidist, useVueDoc, addBadges
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
     renameFiles(files, /\/HelloWorld\./, `/${componentName}.`)
+
+    if (!addLicense) {
+      return
+    }
+
+    const licenseTextTemplate = licenseList[licenseName].licenseText;
+    const year = new Date().getFullYear()
+    const licenseText = replaceInLicense(licenseTextTemplate, 'year', year)
+    files['LICENSE'] = replaceInLicense(licenseText, 'copyright holders', copyrightHolders)
   })
 }

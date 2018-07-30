@@ -33,7 +33,7 @@ function updateScriptDescription(options) {
     return scriptDescription
 }
 
-module.exports = (content, { componentName, useVueDoc, useVueStyleguidist, addBadges }) => {
+module.exports = (content, { addBadges, addLicense, componentName, licenseName, useVueDoc, useVueStyleguidist }) => {
     const hasGit = hasProjectGit (process.cwd())
 
     const updateInReadMe = [
@@ -49,8 +49,13 @@ module.exports = (content, { componentName, useVueDoc, useVueStyleguidist, addBa
             )    
         }
         updateInReadMe.push(
-            `[![Npm version](https://img.shields.io/npm/v/$1.svg?maxAge=2592000)](https://www.npmjs.com/package/$1)`,
+            '[![Npm version](https://img.shields.io/npm/v/$1.svg?maxAge=2592000)](https://www.npmjs.com/package/$1)',
         );
+        if (hasGit && addLicense){
+            updateInReadMe.push(
+                `[![${licenseName} License](https://img.shields.io/github/license/${userName}/$1.svg)](https://github.com/${userName}/$1/blob/master/LICENSE)`,
+            );
+        }
     }
 
     updateInReadMe.push(
