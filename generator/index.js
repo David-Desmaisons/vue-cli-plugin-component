@@ -17,11 +17,11 @@ function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   return scripts.map(script => `npm run ${script}`).join(' && ')
 }
 
-function replaceInLicense(licenseTextTemplate, sourceText, newText){
+function replaceInLicense(licenseTextTemplate, sourceText, newText) {
   return licenseTextTemplate.replace(new RegExp(`<${sourceText}>`), newText)
-                            .replace(new RegExp(`\\[${sourceText}\\]`), newText)
+    .replace(new RegExp(`\\[${sourceText}\\]`), newText)
 }
- 
+
 module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useVueDoc, useVueStyleguidist }) => {
 
   const useLint = api.hasPlugin('eslint')
@@ -69,6 +69,12 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
       devDependencies: {
         '@vuedoc/md': "^1.3.3"
       }
+    })
+  }
+
+  if (addLicense) {
+    api.extendPackage({
+      license : licenseName
     })
   }
 

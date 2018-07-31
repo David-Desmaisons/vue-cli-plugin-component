@@ -5,7 +5,7 @@ const licenses = licensesInformation.map(name => ({
     value: name
 }));
 
-module.exports = [
+const prompts = module.exports = [
     {
         type: 'input',
         name: 'componentName',
@@ -56,3 +56,8 @@ module.exports = [
         group: 'License',
     },
 ]
+
+module.exports.getPrompts = pkg => {
+    prompts[0].default = pkg.name
+    return prompts
+}
