@@ -14,7 +14,7 @@ project
 │   ├── index.js
 │   └───components
 │       └───Mycomponent.vue
-│   
+│
 └───example
     ├── App.vue
     ├── main.js
@@ -40,12 +40,12 @@ project
 
 Use build to build the component
 ``` sh
-nom run build
+npm run build
 ```
 
 Use serve to serve the application example in the example folder
 ``` sh
-nom run serve
+npm run serve
 ```
 
 ### When using vue.doc
