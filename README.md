@@ -14,7 +14,7 @@ project
 │   ├── index.js
 │   └───components
 │       └───Mycomponent.vue
-│   
+│
 └───example
     ├── App.vue
     ├── main.js
