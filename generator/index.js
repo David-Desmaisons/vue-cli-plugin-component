@@ -67,7 +67,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
         'doc:build': `npx vuedoc.md --section API --output ./README.md ./src/components/${componentName}.vue`
       },
       devDependencies: {
-        '@vuedoc/md': "^1.3.3"
+        '@vuedoc/md': "^1.5.0"
       }
     })
   }
