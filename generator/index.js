@@ -1,4 +1,5 @@
 const { renameFiles, updateFile } = require('./fileHelper')
+const { updateExample } = ('./updateTemplateWithCompnentFixture')
 const readmeUpdater = require('./readmeUpdater');
 const licenseList = require('spdx-license-list/full');
 
@@ -22,11 +23,11 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText) {
     .replace(new RegExp(`\\[${sourceText}\\]`), newText)
 }
 
-module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useVueDoc, useVueStyleguidist }) => {
+module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist }) => {
 
   const useLint = api.hasPlugin('eslint')
   const packageName = api.generator.pkg.name
-  const context = { addBadges, addLicense, componentName, licenseName, packageName, useLint, useVueDoc, useVueStyleguidist }
+  const context = { addBadges, addLicense, componentName, licenseName, packageName, useComponentFixture, useLint, useVueDoc, useVueStyleguidist }
 
   api.extendPackage({
     main: `dist/${packageName}.umd.js`,
@@ -72,33 +73,45 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
     })
   }
 
+  if (useComponentFixture) {
+    api.extendPackage({
+      devDependencies: {
+        'component-fixture': "^0.3.0"
+      }
+    })
+  }
+
   if (addLicense) {
     api.extendPackage({
-      license : licenseName
+      license: licenseName
     })
   }
 
   api.render('./template')
 
   api.postProcessFiles(files => {
-    const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest')
+    const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest');
     if (hasTest) {
-      updateFile(files, 'tests/unit/HelloWorld.spec.js', content => content.replace(/HelloWorld/g, componentName))
+      updateFile(files, 'tests/unit/HelloWorld.spec.js', content => content.replace(/HelloWorld/g, componentName));
     }
 
-    updateFile(files, 'README.md', content => readmeUpdater(content, context))
+    updateFile(files, 'README.md', content => readmeUpdater(content, context));
+
+    if (useComponentFixture) {
+      updateFile(files, 'src/App.vue', updateExample);
+    }
 
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
     renameFiles(files, /\/HelloWorld\./, `/${componentName}.`)
 
     if (!addLicense) {
-      return
+      return;
     }
 
     const licenseTextTemplate = licenseList[licenseName].licenseText;
-    const year = new Date().getFullYear()
-    const licenseText = replaceInLicense(licenseTextTemplate, 'year', year)
-    files['LICENSE'] = replaceInLicense(licenseText, 'copyright holders', copyrightHolders)
+    const year = new Date().getFullYear();
+    const licenseText = replaceInLicense(licenseTextTemplate, 'year', year);
+    files['LICENSE'] = replaceInLicense(licenseText, 'copyright holders', copyrightHolders);
   })
 }
