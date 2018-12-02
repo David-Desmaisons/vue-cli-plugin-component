@@ -8,7 +8,8 @@ const templateUpdater = (m) => `<component-fixture>
 
 const script = '<script>';
 const scriptUpdater = `<script>
-import { ComponentFixture, Editor } from 'component-fixture'`;
+import { ComponentFixture, Editor } from 'component-fixture'
+import "component-fixture/dist/ComponentFixture.css";`;
 
 const exportComponents = '  components: {';
 const exportUpdater = `  components: {
