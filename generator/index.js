@@ -1,5 +1,5 @@
 const { renameFiles, updateFile } = require('./fileHelper')
-const { updateExample } = ('./updateTemplateWithCompnentFixture')
+const { updateExample } = require('./componentFixtureHelper')
 const readmeUpdater = require('./readmeUpdater');
 const licenseList = require('spdx-license-list/full');
 
@@ -98,7 +98,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
     updateFile(files, 'README.md', content => readmeUpdater(content, context));
 
     if (useComponentFixture) {
-      updateFile(files, 'src/App.vue', updateExample);
+      updateFile(files, 'src/App.vue', content => updateExample(content, componentName));
     }
 
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
