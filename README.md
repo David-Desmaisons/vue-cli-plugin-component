@@ -29,6 +29,7 @@ project
 * Update README.md with component information
 
 * Optional
+    * Use [ComponentFixture](https://github.com/David-Desmaisons/ComponentFixture) to develop and test the component
 
     * Automatically document the component with [vue-styleguidist](https://github.com/vue-styleguidist/vue-styleguidist) and [vuedoc.md](https://gitlab.com/vuedoc/md) .
 
