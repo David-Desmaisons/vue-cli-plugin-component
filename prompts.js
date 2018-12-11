@@ -9,7 +9,7 @@ const prompts = module.exports = [
   {
     type: 'input',
     name: 'componentName',
-    message: 'Enter the component name:'
+    message: 'Enter the component name (in CamelCase- no ifen):'
   },
   {
     type: 'confirm',

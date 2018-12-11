@@ -24,8 +24,9 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText) {
 }
 
 module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist }) => {
-
   const useLint = api.hasPlugin('eslint')
+  const usesTypescript = api.hasPlugin('typescript')
+  const extension = usesTypescript? 'ts' : 'js'
   const packageName = api.generator.pkg.name
   const context = { addBadges, addLicense, componentName, licenseName, packageName, useComponentFixture, useLint, useVueDoc, useVueStyleguidist }
 
@@ -39,8 +40,8 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
       `src/*`
     ],
     scripts: {
-      serve: "vue-cli-service serve ./example/main.js --open",
-      build: `vue-cli-service build --name ${packageName} --entry ./src/index.js --target lib`,
+      serve: `vue-cli-service serve ./example/main.${extension} --open`,
+      build: `vue-cli-service build --name ${packageName} --entry ./src/index.${extension} --target lib`,
       prepublishOnly: buildPrePublishOnly(context)
     },
     private: false,
@@ -92,7 +93,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
   api.postProcessFiles(files => {
     const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest');
     if (hasTest) {
-      updateFile(files, 'tests/unit/HelloWorld.spec.js', content => content.replace(/HelloWorld/g, componentName));
+      updateFile(files, `tests/unit/HelloWorld.spec.${extension}`, content => content.replace(/HelloWorld/g, componentName));
     }
 
     updateFile(files, 'README.md', content => readmeUpdater(content, context));
@@ -101,7 +102,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
       updateFile(files, 'src/App.vue', content => updateExample(content, componentName));
     }
 
-    const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js']
+    const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js', 'src/index.ts']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
     renameFiles(files, /\/HelloWorld\./, `/${componentName}.`)
 
