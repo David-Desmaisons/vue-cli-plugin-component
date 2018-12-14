@@ -9,7 +9,7 @@ const prompts = module.exports = [
   {
     type: 'input',
     name: 'componentName',
-    message: 'Enter the component name (in CamelCase- no ifen):'
+    message: 'Enter the component name (in CamelCase- no hyphen or dash):'
   },
   {
     type: 'confirm',

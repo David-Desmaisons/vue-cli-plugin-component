@@ -37,7 +37,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
       "dist/*.css",
       "dist/*.map",
       "dist/*.js",
-      `src/*`
+      'src/*'
     ],
     scripts: {
       serve: `vue-cli-service serve ./example/main.${extension} --open`,
