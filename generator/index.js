@@ -1,4 +1,4 @@
-const { renameFiles, updateFile } = require('./fileHelper')
+const { rename, renameFiles, updateFile } = require('./fileHelper')
 const { updateExample } = require('./componentFixtureHelper')
 const readmeUpdater = require('./readmeUpdater');
 const licenseList = require('spdx-license-list/full');
@@ -26,7 +26,7 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText) {
 module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist }) => {
   const useLint = api.hasPlugin('eslint')
   const usesTypescript = api.hasPlugin('typescript')
-  const extension = usesTypescript? 'ts' : 'js'
+  const extension = usesTypescript ? 'ts' : 'js'
   const packageName = api.generator.pkg.name
   const context = { addBadges, addLicense, componentName, licenseName, packageName, useComponentFixture, useLint, useVueDoc, useVueStyleguidist }
 
@@ -105,6 +105,10 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js', 'src/index.ts']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
     renameFiles(files, /\/HelloWorld\./, `/${componentName}.`)
+
+    if (usesTypescript) {
+      rename(files, 'src/index.js', 'src/index.ts');
+    }
 
     if (!addLicense) {
       return;
