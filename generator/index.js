@@ -77,7 +77,7 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
   if (useComponentFixture) {
     api.extendPackage({
       devDependencies: {
-        'component-fixture': "^0.3.0"
+        'component-fixture': "^0.4.0"
       }
     })
   }

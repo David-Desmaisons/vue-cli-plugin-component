@@ -15,7 +15,7 @@ const prompts = module.exports = [
     type: 'confirm',
     name: 'useComponentFixture',
     message: 'Use componentFixture to build example?',
-    default: false,
+    default: true,
     group: 'Example',
   },
   {
