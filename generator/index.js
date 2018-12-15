@@ -119,4 +119,18 @@ module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders,
     const licenseText = replaceInLicense(licenseTextTemplate, 'year', year);
     files['LICENSE'] = replaceInLicense(licenseText, 'copyright holders', copyrightHolders);
   })
+
+  api.onCreateComplete(() => {
+    if (!api.hasPlugin('eslint')) {
+      return;
+    }
+    // Lint generated/modified files
+    try {
+      const lint = require('@vue/cli-plugin-eslint/lint');
+      const files = ['*.js', '.*.js', '*.ts', '*.vue', 'src'];
+      lint({ silent: true, _: files }, api);
+    } catch (e) {
+      api.exitLog('lint not performed', 'warn');
+    }
+  })
 }
