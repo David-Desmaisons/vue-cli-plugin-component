@@ -25,7 +25,7 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText) {
 }
 
 module.exports = (api, context) => {
-  const { addBadges, addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist } = context
+  const { addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist } = context
   const useLint = api.hasPlugin('eslint')
   const usesTypescript = api.hasPlugin('typescript')
   const extension = usesTypescript ? 'ts' : 'js'
@@ -70,7 +70,7 @@ module.exports = (api, context) => {
   if (useVueDoc) {
     api.extendPackage({
       scripts: {
-        'doc:build': `npx vuedoc.md --section API --output ./README.md ./src/components/${componentName}.vue`
+        'doc:build': `npx vuedoc.md --section API --output ./README.md ./src/components/${context.componentName}.vue`
       },
       devDependencies: {
         '@vuedoc/md': "^1.5.0"
@@ -97,18 +97,18 @@ module.exports = (api, context) => {
   api.postProcessFiles(files => {
     const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest');
     if (hasTest) {
-      updateFile(files, `tests/unit/HelloWorld.spec.${extension}`, content => content.replace(/HelloWorld/g, componentName));
+      updateFile(files, `tests/unit/HelloWorld.spec.${extension}`, content => content.replace(/HelloWorld/g, context.componentName));
     }
 
     updateFile(files, 'README.md', content => readmeUpdater(content, context));
 
     if (useComponentFixture) {
-      updateFile(files, 'src/App.vue', content => updateExample(content, componentName));
+      updateFile(files, 'src/App.vue', content => updateExample(content, context.componentName));
     }
 
     const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js', 'src/index.ts']
     renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
-    renameFiles(files, /\/HelloWorld\./, `/${componentName}.`)
+    renameFiles(files, /\/HelloWorld\./, `/${context.componentName}.`)
 
     if (usesTypescript) {
       rename(files, 'src/index.js', 'src/index.ts');
