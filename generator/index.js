@@ -29,8 +29,7 @@ module.exports = (api, context) => {
   const useLint = api.hasPlugin('eslint')
   const usesTypescript = api.hasPlugin('typescript')
   const extension = usesTypescript ? 'ts' : 'js'
-  componentName = camelCase(componentName, { pascalCase: true });
-  context.componentName = componentName
+  context.componentName = camelCase(componentName, { pascalCase: true });
   const packageName = api.generator.pkg.name
   context.packageName = packageName
   context.useLint = useLint
