@@ -32,7 +32,8 @@ module.exports = (api, context) => {
   componentName = camelCase(componentName, { pascalCase: true });
   context.componentName = componentName
   const packageName = api.generator.pkg.name
-  const context = { addBadges, addLicense, componentName, licenseName, packageName, useComponentFixture, useLint, useVueDoc, useVueStyleguidist }
+  context.packageName = packageName
+  context.useLint = useLint
 
   api.extendPackage({
     main: `dist/${packageName}.umd.js`,
@@ -125,7 +126,7 @@ module.exports = (api, context) => {
   })
 
   api.onCreateComplete(() => {
-    if (!api.hasPlugin('eslint')) {
+    if (useLint) {
       return;
     }
     // Lint generated/modified files
