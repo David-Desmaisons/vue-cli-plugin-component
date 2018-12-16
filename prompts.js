@@ -1,4 +1,5 @@
 
+const camelCase = require('camelcase');
 const licensesInformation = require('spdx-license-list/spdx-simple.json')
 const licenses = licensesInformation.map(name => ({
   name,
@@ -9,7 +10,7 @@ const prompts = module.exports = [
   {
     type: 'input',
     name: 'componentName',
-    message: 'Enter the component name (in CamelCase- no hyphen or dash):'
+    message: 'Enter the component name (in PascalCase- no hyphen nor dash):'
   },
   {
     type: 'confirm',
@@ -65,6 +66,6 @@ const prompts = module.exports = [
 ]
 
 module.exports.getPrompts = pkg => {
-  prompts[0].default = pkg.name
+  prompts[0].default = camelCase(pkg.name, {pascalCase: true});
   return prompts
 }

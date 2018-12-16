@@ -2,6 +2,7 @@ const { rename, renameFiles, updateFile } = require('./fileHelper')
 const { updateExample } = require('./componentFixtureHelper')
 const readmeUpdater = require('./readmeUpdater');
 const licenseList = require('spdx-license-list/full');
+const camelCase = require('camelcase');
 
 function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
   const scripts = []
@@ -23,10 +24,13 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText) {
     .replace(new RegExp(`\\[${sourceText}\\]`), newText)
 }
 
-module.exports = (api, { addBadges, addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist }) => {
+module.exports = (api, context) => {
+  const { addBadges, addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist } = context
   const useLint = api.hasPlugin('eslint')
   const usesTypescript = api.hasPlugin('typescript')
   const extension = usesTypescript ? 'ts' : 'js'
+  componentName = camelCase(componentName, { pascalCase: true });
+  context.componentName = componentName
   const packageName = api.generator.pkg.name
   const context = { addBadges, addLicense, componentName, licenseName, packageName, useComponentFixture, useLint, useVueDoc, useVueStyleguidist }
 
