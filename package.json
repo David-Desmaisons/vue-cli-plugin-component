@@ -1,7 +1,7 @@
 {
   "name": "vue-cli-plugin-component",
-  "version": "1.10.5",
-  "description": "vue-cli 3 plugin to create shareable component",
+  "version": "1.11.0",
+  "description": "vue-cli 3 plugin to develop component",
   "main": "index.js",
   "repository": {
     "type": "git",
