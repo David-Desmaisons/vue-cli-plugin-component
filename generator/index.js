@@ -4,17 +4,20 @@ const readmeUpdater = require('./readmeUpdater');
 const licenseList = require('spdx-license-list/full');
 const camelCase = require('camelcase');
 
-function buildPrePublishOnly({ useVueStyleguidist, useVueDoc, useLint }) {
+function buildPrePublishOnly({ useVueStyleguidist, hasTest, useVueDoc, useLint }) {
   const scripts = []
+  if (hasTest) {
+    scripts.push('test:unit');
+  }
   if (useLint) {
-    scripts.push('lint')
+    scripts.push('lint');
   }
   scripts.push('build')
   if (useVueStyleguidist) {
-    scripts.push('styleguide:build')
+    scripts.push('styleguide:build');
   }
   if (useVueDoc) {
-    scripts.push('doc:build')
+    scripts.push('doc:build');
   }
   return scripts.map(script => `npm run ${script}`).join(' && ')
 }
@@ -25,14 +28,16 @@ function replaceInLicense(licenseTextTemplate, sourceText, newText) {
 }
 
 module.exports = (api, context) => {
-  const { addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist } = context
-  const useLint = api.hasPlugin('eslint')
-  const usesTypescript = api.hasPlugin('typescript')
-  const extension = usesTypescript ? 'ts' : 'js'
+  const { addLicense, componentName, copyrightHolders, licenseName, useComponentFixture, useVueDoc, useVueStyleguidist } = context;
+  const useLint = api.hasPlugin('eslint');
+  const usesTypescript = api.hasPlugin('typescript');
+  const extension = usesTypescript ? 'ts' : 'js';
+  const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest');
   context.componentName = camelCase(componentName, { pascalCase: true });
-  const packageName = api.generator.pkg.name
-  context.packageName = packageName
-  context.useLint = useLint
+  const packageName = api.generator.pkg.name;
+  context.packageName = packageName;
+  context.useLint = useLint;
+  context.hasTest = hasTest;
 
   api.extendPackage({
     main: `dist/${packageName}.umd.js`,
@@ -95,7 +100,6 @@ module.exports = (api, context) => {
   api.render('./template')
 
   api.postProcessFiles(files => {
-    const hasTest = api.hasPlugin('unit-mocha') || api.hasPlugin('unit-jest');
     if (hasTest) {
       updateFile(files, `tests/unit/HelloWorld.spec.${extension}`, content => content.replace(/HelloWorld/g, context.componentName));
     }
@@ -106,9 +110,9 @@ module.exports = (api, context) => {
       updateFile(files, 'src/App.vue', content => updateExample(content, context.componentName));
     }
 
-    const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js', 'src/index.ts']
-    renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1)
-    renameFiles(files, /\/HelloWorld\./, `/${context.componentName}.`)
+    const immutableFiles = ['src/components/HelloWorld.vue', 'src/index.js', 'src/index.ts'];
+    renameFiles(files, /^src\//, 'example/', (file) => immutableFiles.indexOf(file) !== -1);
+    renameFiles(files, /\/HelloWorld\./, `/${context.componentName}.`);
 
     if (usesTypescript) {
       rename(files, 'src/index.js', 'src/index.ts');
