@@ -101,7 +101,9 @@ module.exports = (api, context) => {
 
   api.postProcessFiles(files => {
     if (hasTest) {
-      updateFile(files, `tests/unit/HelloWorld.spec.${extension}`, content => content.replace(/HelloWorld/g, context.componentName));
+      const updateTestFile = (name) => updateFile(files, `tests/unit/${name}.spec.${extension}`, content => content.replace(/HelloWorld/g, context.componentName));
+      updateTestFile('HelloWorld');
+      updateTestFile('example');
     }
 
     updateFile(files, 'README.md', content => readmeUpdater(content, context));
