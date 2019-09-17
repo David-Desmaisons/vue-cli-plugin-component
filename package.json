@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-component",
-  "version": "1.11.2",
+  "version": "1.12.0",
   "description": "vue-cli 3 plugin to develop component",
   "main": "index.js",
   "repository": {

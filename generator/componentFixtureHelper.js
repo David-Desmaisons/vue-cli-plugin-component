@@ -1,20 +1,17 @@
-const templateUpdater = (m) => `<component-fixture>
+const templateUpdater = (m) => `<sandbox>
 
       ${m}
 
-      <Editor slot="control" slot-scope="scope" v-bind="scope"/>
-
-    </component-fixture>`;
+    </sandbox>`;
 
 const script = '<script>';
 const scriptUpdater = `<script>
-import { ComponentFixture, Editor } from 'component-fixture'
+import { Sandbox } from 'component-fixture'
 import "component-fixture/dist/ComponentFixture.css";`;
 
 const exportComponents = '  components: {';
 const exportUpdater = `  components: {
-    ComponentFixture,
-    Editor,`;
+    Sandbox,`;
 
 function updateExample(content, componentName) {
   const componentTemplateRegex = new RegExp(`<${componentName} (.)*\/>`, 'g');
