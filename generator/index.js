@@ -86,7 +86,7 @@ module.exports = (api, context) => {
   if (useComponentFixture) {
     api.extendPackage({
       devDependencies: {
-        'component-fixture': "^1.0.7"
+        'component-fixture': "^1.0.9"
       }
     })
   }

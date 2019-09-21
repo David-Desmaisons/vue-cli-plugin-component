@@ -7,6 +7,7 @@ const templateUpdater = (m) => `<sandbox>
 const script = '<script>';
 const scriptUpdater = `<script>
 import { Sandbox } from 'component-fixture'
+import "font-awesome/css/font-awesome.css";
 import "component-fixture/dist/ComponentFixture.css";`;
 
 const exportComponents = '  components: {';
