@@ -67,7 +67,7 @@ module.exports = (api, context) => {
         'styleguide:build': "vue-styleguidist build"
       },
       devDependencies: {
-        'vue-styleguidist': "^1.7.13",
+        'vue-styleguidist': "^3.14.3",
       }
     })
   }
